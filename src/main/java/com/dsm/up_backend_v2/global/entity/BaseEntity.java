@@ -26,6 +26,7 @@ public class BaseEntity {
     @Column(nullable = false)
     private String  createDate;
 
+    @PrePersist
     public void prePersist() {
         this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
     }
