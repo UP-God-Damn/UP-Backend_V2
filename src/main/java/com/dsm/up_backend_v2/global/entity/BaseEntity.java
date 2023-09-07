@@ -1,7 +1,6 @@
 package com.dsm.up_backend_v2.global.entity;
 
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
