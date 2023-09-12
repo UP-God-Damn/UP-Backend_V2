@@ -38,7 +38,7 @@ public class Post extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
