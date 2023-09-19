@@ -14,20 +14,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer";
 
     private final AuthDetailsService authDetailsService;
 
-    @Value("${spring.jwt.secretKey}")
+    @Value("${spring.jwt.key}")
     private String secretKey;
 
-    @Value("$${spring.jwt.access}")
+    @Value("${spring.jwt.access}")
     private Long access;
 
     @Value("${spring.jwt.refresh}")
@@ -54,14 +53,13 @@ public class JwtProvider {
 
     public Authentication authentication(String token) { //토큰을 이용하여 사용자의 정보를 가져옴
         UserDetails userDetails = authDetailsService.loadUserByUsername(getSubject(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());    }
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
 
     public boolean validate(String token){ //토큰의 유효성 검사
-        isRefreshToken(token);
 
         try{
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
+            return getBody(token).getExpiration().after(new Date());
         } catch(ExpiredJwtException e) { //만료된 토큰
             throw new RuntimeException();
         } catch(IllegalArgumentException e) { //잘못된 토큰
@@ -71,18 +69,23 @@ public class JwtProvider {
         } catch (Exception e) {
             throw new RuntimeException();
         }
+
     }
 
     private void isRefreshToken(String token) { //리프레시토큰인지 확인
-        if(getHeader(token).equals("refresh")) throw new RuntimeException();
+        try {
+            getHeader(token).equals("refresh");
+        }catch (Exception e) {
+            throw new RuntimeException("Not_RefreshToken");
+        }
     }
 
-    private Header getHeader(String token) { //주어진 토큰의헤더를 추출
+    private Header getHeader(String token) { //주어진 토큰의 헤더를 추출
         return Jwts.parser().setSigningKey(secretKey)
                 .parseClaimsJws(token).getHeader();
     }
 
-    public String getSubject(String token) { //토큰의
+    public String getSubject(String token) { //토큰에서 사용자 정보(아이디) 추출
         try {
             return getBody(token).getSubject();
         } catch (Exception e) {
@@ -94,10 +97,10 @@ public class JwtProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader(HEADER);
-        return(bearer);
+    public String parse(String bearerToken) { //jwt 토큰 부분만 추출
+        if (bearerToken != null && bearerToken.startsWith(PREFIX))
+            return bearerToken.replace((PREFIX), "");
+        return null;
     }
-
 
 }
