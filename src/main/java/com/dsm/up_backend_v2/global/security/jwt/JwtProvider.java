@@ -19,7 +19,6 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    private static final String PREFIX = "Bearer";
 
     private final AuthDetailsService authDetailsService;
 
@@ -95,12 +94,6 @@ public class JwtProvider {
 
     private Claims getBody(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-    }
-
-    public String parse(String bearerToken) { //jwt 토큰 부분만 추출
-        if (bearerToken != null && bearerToken.startsWith(PREFIX))
-            return bearerToken.replace((PREFIX), "");
-        return null;
     }
 
 }

@@ -16,6 +16,7 @@ import java.io.IOException;
 public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtProvider jwtProvider;
     private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
@@ -31,6 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader(HEADER);
-        return(jwtProvider.parse(bearer));
+        if (bearer != null && bearer.startsWith(PREFIX)) return bearer.replace((PREFIX), "");
+        return null;
     }
 }
