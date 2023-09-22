@@ -21,7 +21,7 @@ public class SignUpService {
     private final JwtProvider jwtProvider;
 
     public TokenResponse signUp(SignupRequest request) {
-        if(userRepository.existsByAccountId(request.getAccountId())) throw new RuntimeException("AccountId_EXSIST");
+        if(userRepository.existsByAccountId(request.getAccountId())) throw new RuntimeException("AccountId_NOT_EXSIST");
 
         User user = userRepository.save(User.builder()
                         .nickName(request.getNickName())
@@ -30,9 +30,10 @@ public class SignUpService {
                 .build());
 
         return TokenResponse.builder()
+                .accessToken(jwtProvider.generateToken(user.getAccountId()))
                 .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
-                        .accountId(request.getAccountId())
-                        .refreshToken(jwtProvider.generateRefreshToken(request.getAccountId()))
+                        .accountId(user.getAccountId())
+                        .refreshToken(jwtProvider.generateRefreshToken(user.getAccountId()))
                         .build()).getRefreshToken())
                 .build();
     }

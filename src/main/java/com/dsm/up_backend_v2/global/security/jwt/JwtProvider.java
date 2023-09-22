@@ -32,7 +32,7 @@ public class JwtProvider {
     private Long refresh;
 
 
-    private String generateToken(String accountId) {
+    public String generateToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "access")
                 .signWith(SignatureAlgorithm.ES256, secretKey)
@@ -56,6 +56,7 @@ public class JwtProvider {
     }
 
     public boolean validate(String token){ //토큰의 유효성 검사
+        isRefreshToken(token);
 
         try{
             return getBody(token).getExpiration().after(new Date());
