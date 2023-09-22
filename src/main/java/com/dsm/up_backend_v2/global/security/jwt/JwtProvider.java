@@ -41,7 +41,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    private String generateRefreshToken(String accountId) {
+    public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "refresh")
                 .signWith(SignatureAlgorithm.ES256, secretKey)
