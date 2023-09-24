@@ -35,7 +35,7 @@ public class JwtProvider {
     public String generateToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "access")
-                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + access * 1000))
                 .compact();
@@ -44,7 +44,7 @@ public class JwtProvider {
     public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "refresh")
-                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refresh * 1000))
                 .compact();
@@ -73,11 +73,7 @@ public class JwtProvider {
     }
 
     private void isRefreshToken(String token) { //리프레시토큰인지 확인
-        try {
-            getHeader(token).equals("refresh");
-        }catch (Exception e) {
-            throw new RuntimeException("Not_RefreshToken");
-        }
+        if(getHeader(token).equals("refresh")) throw new RuntimeException("NOT_ACCESS_TOKEN");
     }
 
     private Header getHeader(String token) { //주어진 토큰의 헤더를 추출

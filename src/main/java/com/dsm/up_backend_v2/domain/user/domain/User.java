@@ -19,7 +19,7 @@ public class User {
     private String accountId;
 
     @Column(nullable = false, length = 12)
-    private String nickName;
+    private String nickname;
 
     @Column(nullable = false, length = 60)
     private String password;
@@ -27,9 +27,9 @@ public class User {
     private String profileImage;
 
     @Builder
-    public User(String accountId, String nickName, String password) {
+    public User(String accountId, String nickname, String password) {
         this.accountId = accountId;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.password = password;
     }
 }

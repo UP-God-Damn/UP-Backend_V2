@@ -23,7 +23,7 @@ public class UserController {
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse signUp(@RequestBody SignupRequest request) {
+    public TokenResponse signup(@RequestBody SignupRequest request) {
         return signUpService.signUp(request);
     }
 

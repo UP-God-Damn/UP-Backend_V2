@@ -21,10 +21,10 @@ public class SignUpService {
     private final JwtProvider jwtProvider;
 
     public TokenResponse signUp(SignupRequest request) {
-        if(userRepository.existsByAccountId(request.getAccountId())) throw new RuntimeException("AccountId_NOT_EXSIST");
+        if(userRepository.existsByAccountId(request.getAccountId())) throw new RuntimeException("AccountId_IS_ALREADY_EXSIST");
 
         User user = userRepository.save(User.builder()
-                        .nickName(request.getNickName())
+                .nickname(request.getNickname())
                         .accountId(request.getAccountId())
                         .password(passwordEncoder.encode(request.getPassword()))
                 .build());
