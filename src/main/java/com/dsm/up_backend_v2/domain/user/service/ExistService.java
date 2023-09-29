@@ -13,7 +13,7 @@ public class ExistService {
 
     @Transactional(readOnly = true)
     public void exist(String accountId) {
-        if(userRepository.existsByAccountId(accountId)) throw new AccountIdAlreadyExistException();
+        if(userRepository.existsByAccountId(accountId)) throw AccountIdAlreadyExistException.EXCEPTION;
     }
 
 }

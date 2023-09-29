@@ -6,6 +6,7 @@ import com.dsm.up_backend_v2.domain.user.domain.repository.RefreshTokenRepositor
 import com.dsm.up_backend_v2.domain.user.domain.repository.UserRepository;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.request.SignupRequest;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.response.TokenResponse;
+import com.dsm.up_backend_v2.domain.user.service.exception.AccountIdAlreadyExistException;
 import com.dsm.up_backend_v2.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +22,7 @@ public class SignUpService {
     private final JwtProvider jwtProvider;
 
     public TokenResponse signUp(SignupRequest request) {
-        if(userRepository.existsByAccountId(request.getAccountId())) throw new RuntimeException("AccountId_IS_ALREADY_EXSIST");
+        if(userRepository.existsByAccountId(request.getAccountId())) throw AccountIdAlreadyExistException.EXCEPTION;
 
         User user = userRepository.save(User.builder()
                 .nickname(request.getNickname())

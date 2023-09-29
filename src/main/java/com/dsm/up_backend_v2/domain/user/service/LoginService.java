@@ -23,10 +23,10 @@ public class LoginService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponse login(LoginRequest request) {
-        User user = userRepository.findByAccountId(request.getAccountId()).orElseThrow(() -> new UserNotFoundException());
+        User user = userRepository.findByAccountId(request.getAccountId()).orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new PasswordMisMatchException();
+            throw PasswordMisMatchException.EXCEPTION;
         }
 
         return TokenResponse.builder()

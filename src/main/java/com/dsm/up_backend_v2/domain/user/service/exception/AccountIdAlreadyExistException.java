@@ -4,7 +4,7 @@ import com.dsm.up_backend_v2.global.error.exception.BaseException;
 import com.dsm.up_backend_v2.global.error.exception.ErrorCode;
 
 public class AccountIdAlreadyExistException extends BaseException {
-    private final AccountIdAlreadyExistException EXCEPTION = new AccountIdAlreadyExistException();
+    public static final AccountIdAlreadyExistException EXCEPTION = new AccountIdAlreadyExistException();
 
     public AccountIdAlreadyExistException() {
         super(ErrorCode.ACCOUNT_ID_ALREADY_EXIST);
