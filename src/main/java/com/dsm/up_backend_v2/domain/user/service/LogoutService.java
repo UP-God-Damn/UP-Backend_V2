@@ -14,7 +14,7 @@ public class LogoutService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserUtil userUtil;
 
-    public void logout(String accountId) {
+    public void logout() {
         RefreshToken refreshToken = refreshTokenRepository.findById(userUtil.getUserId()) .orElseThrow(() -> UserNotFoundException.EXCEPTION);
 
         refreshTokenRepository.delete(refreshToken);

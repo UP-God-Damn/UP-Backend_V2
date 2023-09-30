@@ -4,7 +4,6 @@ import com.dsm.up_backend_v2.global.error.exception.BaseException;
 import com.dsm.up_backend_v2.global.error.exception.ErrorCode;
 
 public class UserNotFoundException extends BaseException {
-
     public static final BaseException EXCEPTION = new UserNotFoundException();
 
     public UserNotFoundException() {

@@ -7,6 +7,7 @@ import com.dsm.up_backend_v2.domain.user.domain.repository.UserRepository;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.request.SignupRequest;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.response.TokenResponse;
 import com.dsm.up_backend_v2.domain.user.service.exception.AccountIdAlreadyExistException;
+import com.dsm.up_backend_v2.domain.user.service.exception.JwtInvalidException;
 import com.dsm.up_backend_v2.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,22 +21,23 @@ public class SignUpService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final AccountIdExistService accountIdExistService;
 
     public TokenResponse signUp(SignupRequest request) {
-        if(userRepository.existsByAccountId(request.getAccountId())) throw AccountIdAlreadyExistException.EXCEPTION;
+        if(accountIdExistService.exist(request.getAccountId())) throw AccountIdAlreadyExistException.EXCEPTION;
 
         User user = userRepository.save(User.builder()
                 .nickname(request.getNickname())
-                        .accountId(request.getAccountId())
-                        .password(passwordEncoder.encode(request.getPassword()))
+                    .accountId(request.getAccountId())
+                    .password(passwordEncoder.encode(request.getPassword()))
                 .build());
 
         return TokenResponse.builder()
                 .accessToken(jwtProvider.generateToken(user.getAccountId()))
                 .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
-                        .accountId(user.getAccountId())
-                        .refreshToken(jwtProvider.generateRefreshToken(user.getAccountId()))
-                        .build()).getRefreshToken())
+                    .accountId(user.getAccountId())
+                    .refreshToken(jwtProvider.generateRefreshToken(user.getAccountId()))
+                    .build()).getRefreshToken())
                 .build();
     }
 }

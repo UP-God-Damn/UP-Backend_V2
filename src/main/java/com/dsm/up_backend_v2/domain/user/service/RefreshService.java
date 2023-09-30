@@ -13,12 +13,12 @@ public class RefreshService {
 
     public TokenResponse refresh(String refreshToken) {
         if(!jwtProvider.validate(refreshToken)) throw UserNotFoundException.EXCEPTION;
-        String accountId = jwtProvider.getSubject(refreshToken);
-        String nAccessToken = jwtProvider.generateToken(accountId);
+        String nAccessToken = jwtProvider.generateToken(jwtProvider.getSubject(refreshToken));
+        String nRefreshToken = jwtProvider.generateRefreshToken(jwtProvider.getSubject(refreshToken));
 
         return TokenResponse.builder()
                 .accessToken(nAccessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(nRefreshToken)
                 .build();
 
     }
