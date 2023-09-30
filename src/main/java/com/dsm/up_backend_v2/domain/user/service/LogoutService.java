@@ -6,7 +6,9 @@ import com.dsm.up_backend_v2.domain.user.service.exception.UserNotFoundException
 import com.dsm.up_backend_v2.domain.user.service.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class LogoutService {

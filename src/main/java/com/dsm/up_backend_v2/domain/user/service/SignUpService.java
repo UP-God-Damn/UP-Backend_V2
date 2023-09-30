@@ -7,12 +7,13 @@ import com.dsm.up_backend_v2.domain.user.domain.repository.UserRepository;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.request.SignupRequest;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.response.TokenResponse;
 import com.dsm.up_backend_v2.domain.user.service.exception.AccountIdAlreadyExistException;
-import com.dsm.up_backend_v2.domain.user.service.exception.JwtInvalidException;
 import com.dsm.up_backend_v2.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class SignUpService {

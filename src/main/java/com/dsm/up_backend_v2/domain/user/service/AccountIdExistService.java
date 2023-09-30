@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class AccountIdExistService {
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
     public boolean exist(String accountId) {
         return (userRepository.existsByAccountId(accountId));
     }
