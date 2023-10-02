@@ -49,10 +49,10 @@ public class UserController {
 
     @GetMapping("/{id}")
     public void exist(@PathVariable(value = "id") String accountId) {
-        if(accountIdExistService.exist(accountId)) throw AccountIdAlreadyExistException.EXCEPTION;
+        accountIdExistService.exist(accountId);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout() {
         logoutService.logout();

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UserUtil {
-
     private final UserRepository userRepository;
+
     public String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) throw JwtInvalidException.EXCEPTION;
@@ -22,6 +22,6 @@ public class UserUtil {
     }
 
     public User findUser() {
-        return userRepository.findByAccountId(getUserId()) .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        return userRepository.findByAccountId(getUserId()).orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }
