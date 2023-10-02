@@ -35,7 +35,7 @@ public class LoginService {
                 .accessToken(jwtProvider.generateToken(user.getAccountId()))
                 .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
                         .accountId(user.getAccountId())
-                        .refreshToken(jwtProvider.generateToken(user.getAccountId()))
+                        .refreshToken(jwtProvider.generateRefreshToken(user.getAccountId()))
                         .build()).getRefreshToken())
                 .build();
     }

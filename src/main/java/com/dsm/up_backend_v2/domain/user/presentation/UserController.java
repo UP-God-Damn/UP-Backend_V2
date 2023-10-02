@@ -8,7 +8,6 @@ import com.dsm.up_backend_v2.domain.user.service.LoginService;
 import com.dsm.up_backend_v2.domain.user.service.LogoutService;
 import com.dsm.up_backend_v2.domain.user.service.RefreshService;
 import com.dsm.up_backend_v2.domain.user.service.SignUpService;
-import com.dsm.up_backend_v2.domain.user.service.exception.AccountIdAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
