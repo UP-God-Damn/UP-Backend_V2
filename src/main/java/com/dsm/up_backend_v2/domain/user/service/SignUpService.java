@@ -25,7 +25,7 @@ public class SignUpService {
     private final AccountIdExistService accountIdExistService;
 
     public TokenResponse signUp(SignupRequest request) {
-        if(accountIdExistService.exist(request.getAccountId())) throw AccountIdAlreadyExistException.EXCEPTION;
+        accountIdExistService.exist(request.getAccountId());
 
         User user = userRepository.save(User.builder()
                 .nickname(request.getNickname())
