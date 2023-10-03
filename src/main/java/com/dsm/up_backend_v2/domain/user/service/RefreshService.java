@@ -1,5 +1,6 @@
 package com.dsm.up_backend_v2.domain.user.service;
 
+import com.dsm.up_backend_v2.domain.user.domain.RefreshToken;
 import com.dsm.up_backend_v2.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up_backend_v2.domain.user.presentation.dto.response.TokenResponse;
 import com.dsm.up_backend_v2.domain.user.service.exception.JwtInvalidException;
@@ -18,9 +19,9 @@ public class RefreshService {
 
     public TokenResponse refresh(String refreshToken) {
         if(!jwtProvider.validate(refreshToken)) throw JwtInvalidException.EXCEPTION;
-        refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
+        RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
-        String subject = jwtProvider.getSubject(refreshToken);
+        String subject = token.getAccountId();
         String nAccessToken = jwtProvider.generateToken(subject);
         String nRefreshToken = jwtProvider.generateRefreshToken(subject);
 
