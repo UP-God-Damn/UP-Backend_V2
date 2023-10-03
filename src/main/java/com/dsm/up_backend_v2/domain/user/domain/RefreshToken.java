@@ -12,24 +12,17 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class RefreshToken {
 
     @Id
-    @Column(nullable = false, length = 12)
     private String accountId;
 
-    @Column(nullable = false, length = 12)
-    private String nickname;
-
-    @Column(nullable = false, length = 60)
-    private String password;
-
-    private String profileImage;
+    @Column(nullable = false)
+    private String refreshToken;
 
     @Builder
-    public User(String accountId, String nickname, String password) {
+    public RefreshToken (String accountId, String refreshToken) {
         this.accountId = accountId;
-        this.nickname = nickname;
-        this.password = password;
+        this.refreshToken = refreshToken;
     }
 }

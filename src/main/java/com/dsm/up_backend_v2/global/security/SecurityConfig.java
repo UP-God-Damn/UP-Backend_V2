@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @RequiredArgsConstructor
@@ -22,8 +23,9 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    protected void configure(HttpSecurity http) throws Exception{
-        http
+    @Bean
+    protected SecurityFilterChain configure(HttpSecurity http) throws Exception{
+        return http
                 .csrf().disable()
                 .cors()
 

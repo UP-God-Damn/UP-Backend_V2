@@ -1,6 +1,10 @@
 package com.dsm.up_backend_v2.global.security.jwt;
 
+import com.dsm.up_backend_v2.domain.user.service.exception.JwtInvalidException;
 import com.dsm.up_backend_v2.global.security.auth.AuthDetailsService;
+import com.dsm.up_backend_v2.global.security.jwt.exception.NotAccessTokenException;
+import com.dsm.up_backend_v2.global.security.jwt.exception.TokenErrorException;
+import com.dsm.up_backend_v2.global.security.jwt.exception.TokenUnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
@@ -31,20 +35,19 @@ public class JwtProvider {
     @Value("${spring.jwt.refresh}")
     private Long refresh;
 
-
-    private String generateToken(String accountId) {
+    public String generateToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "access")
-                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + access * 1000))
                 .compact();
     }
 
-    private String generateRefreshToken(String accountId) {
+    public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "refresh")
-                .signWith(SignatureAlgorithm.ES256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refresh * 1000))
                 .compact();
@@ -56,27 +59,24 @@ public class JwtProvider {
     }
 
     public boolean validate(String token){ //토큰의 유효성 검사
+        isRefreshToken(token);
 
         try{
             return getBody(token).getExpiration().after(new Date());
-        } catch(ExpiredJwtException e) { //만료된 토큰
-            throw new RuntimeException();
+        } catch(ExpiredJwtException e) {
+            throw JwtInvalidException.EXCEPTION;
         } catch(IllegalArgumentException e) { //잘못된 토큰
-            throw new RuntimeException();
+            throw TokenUnauthorizedException.EXCEPTION;
         } catch(UnsupportedJwtException e) { //지원되지 않는 토큰
-            throw new RuntimeException();
+            throw NotAccessTokenException.EXCEPTION;
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw TokenErrorException.EXCEPTION;
         }
 
     }
 
     private void isRefreshToken(String token) { //리프레시토큰인지 확인
-        try {
-            getHeader(token).equals("refresh");
-        }catch (Exception e) {
-            throw new RuntimeException("Not_RefreshToken");
-        }
+        if(getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
     }
 
     private Header getHeader(String token) { //주어진 토큰의 헤더를 추출
@@ -88,7 +88,7 @@ public class JwtProvider {
         try {
             return getBody(token).getSubject();
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw TokenUnauthorizedException.EXCEPTION;
         }
     }
 
