@@ -21,9 +21,9 @@ public class RefreshService {
         if(!jwtProvider.validate(refreshToken)) throw JwtInvalidException.EXCEPTION;
         RefreshToken token = refreshTokenRepository.findByRefreshToken(refreshToken).orElseThrow(() -> RefreshTokenNotFoundException.EXCEPTION);
 
-        String subject = token.getAccountId();
-        String nAccessToken = jwtProvider.generateToken(subject);
-        String nRefreshToken = jwtProvider.generateRefreshToken(subject);
+        String accountId = token.getAccountId();
+        String nAccessToken = jwtProvider.generateToken(accountId);
+        String nRefreshToken = jwtProvider.generateRefreshToken(accountId);
 
         return TokenResponse.builder()
                 .accessToken(nAccessToken)
