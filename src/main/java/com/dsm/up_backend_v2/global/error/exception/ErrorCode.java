@@ -19,6 +19,9 @@ public enum ErrorCode {
     TOKEN_ERROR(401, "토큰이 잘못되지 않았는지 확인해주세요."),
     TOKEN_UNAUTHORIZED(401,"토큰이 유효 하지 않습니다."),
 
+    //Forbidden
+    USER_NOT_MATCH_(403,"작성자와 일치하지 않습니다"),
+
     //Not Found
     USER_NOT_FOUND(404,"찾을 수 없는 유저입니다."),
     POST_NOT_FOUND(404, "게시글을 찾을 수 없습니다."),
