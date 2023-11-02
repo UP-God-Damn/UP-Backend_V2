@@ -19,8 +19,8 @@ public class PostRequest {
     private String language;
 
     @NotBlank
-    private Enum State;
+    private String State;
 
     @NotBlank
-    private Enum Major;
+    private String Major;
 }
