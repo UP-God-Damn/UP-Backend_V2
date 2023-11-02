@@ -1,1 +1,27 @@
+server:
+  port: 9090
 
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/
+    username: root
+    password: Inging2514!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+cloud:
+  aws:
+    s3:
+      default-image: https://s3.ap-northeast-2.amazonaws.com/upbackend.aws.s3/logo.png
+      url: http://up-image.s3-website.ap-northeast-2.amazonaws.com
+      bucket: up-image
+    credentials:
+      access-key: AKIASLBWSW4IDQGOBKPQ
+      secret-key: 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ㅗㅗㅜ
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
