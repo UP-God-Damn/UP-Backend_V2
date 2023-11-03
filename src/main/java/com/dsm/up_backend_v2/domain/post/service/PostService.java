@@ -5,19 +5,13 @@ import com.dsm.up_backend_v2.domain.post.domain.repository.PostRepository;
 import com.dsm.up_backend_v2.domain.post.domain.type.Major;
 import com.dsm.up_backend_v2.domain.post.domain.type.State;
 import com.dsm.up_backend_v2.domain.post.exception.PostNotFoundException;
-import com.dsm.up_backend_v2.domain.post.exception.UserNotMatchException;
 import com.dsm.up_backend_v2.domain.post.presentation.dto.request.PostRequest;
-import com.dsm.up_backend_v2.domain.post.presentation.dto.response.PostListResponse;
 import com.dsm.up_backend_v2.global.aws.S3Util;
-import com.dsm.up_backend_v2.global.aws.exception.ImageUploadFailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -37,7 +31,6 @@ public class PostService {
 
         return post.getId();
     }
-
     public Long update(Long id, PostRequest request, MultipartFile file, String userId) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
